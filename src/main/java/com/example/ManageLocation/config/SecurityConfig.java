@@ -2,6 +2,7 @@ package com.example.ManageLocation.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,8 +16,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth-> auth
-                        .requestMatchers("").permitAll()
-                        .requestMatchers("").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+//                        .requestMatchers("").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
         return http.build();

@@ -2,6 +2,7 @@ package com.example.ManageLocation.dto.auth;
 
 import com.example.ManageLocation.enums.Role;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
 
 public record SignUpRequest(
         @NotBlank(message = "Please input your mobile phone number")
@@ -20,7 +21,5 @@ public record SignUpRequest(
         String cfPassword,
 
         Role role
-
-
 ) {
 }
