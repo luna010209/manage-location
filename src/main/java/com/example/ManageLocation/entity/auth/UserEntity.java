@@ -2,10 +2,7 @@ package com.example.ManageLocation.entity.auth;
 
 import com.example.ManageLocation.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -24,9 +21,12 @@ public class UserEntity {
 
     private String username;
     private String phone;
+    @Setter
     private String email;
+    @Setter
     private String password;
 
+    @Setter
     private LocalDateTime lastLogin;
 
     @Column(name = "role")
