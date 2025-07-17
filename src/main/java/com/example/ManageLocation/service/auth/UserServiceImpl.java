@@ -3,6 +3,7 @@ package com.example.ManageLocation.service.auth;
 import com.example.ManageLocation.dto.auth.LoginRequest;
 import com.example.ManageLocation.dto.auth.LoginResponse;
 import com.example.ManageLocation.dto.auth.SignUpRequest;
+import com.example.ManageLocation.dto.auth.UserInfo;
 import com.example.ManageLocation.entity.auth.HistoryLogin;
 import com.example.ManageLocation.entity.auth.UserEntity;
 import com.example.ManageLocation.exception.CustomException;
@@ -11,6 +12,8 @@ import com.example.ManageLocation.jwt.JwtProperties;
 import com.example.ManageLocation.jwt.TokenProvider;
 import com.example.ManageLocation.repo.auth.HistoryLoginRepo;
 import com.example.ManageLocation.repo.auth.UserRepo;
+import io.micrometer.common.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -86,6 +91,17 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-
+    @Override
+    public UserInfo userLogin() {
+        String emailOrPhone = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = null;
+        if (userRepo.existsByEmail(emailOrPhone))
+            user = userRepo.findByEmail(emailOrPhone).orElseThrow();
+        else if (userRepo.existsByPhone(emailOrPhone)) {
+            user = userRepo.findByPhone(emailOrPhone).orElseThrow();
+        }
+        if (user == null) throw new CustomException(HttpStatus.BAD_REQUEST, "No user login");
+        return UserInfo.from(user);
+    }
 
 }

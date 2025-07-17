@@ -1,5 +1,6 @@
 package com.example.ManageLocation.entity.auth;
 
+import com.example.ManageLocation.config.jpa.Auditable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class HistoryLogin {
 
     private String userAgent;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
