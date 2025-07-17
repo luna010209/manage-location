@@ -3,10 +3,10 @@ spring:
     name: ManageLocation
 
   datasource:
-    url: jdbc:mysql://localhost:3306/<db>
+    url: jdbc:mysql://localhost:3306/${db}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: <username>
-    password: <password>
+    username: ${username}
+    password: ${password}
 
   servlet:
     multipart:
@@ -24,7 +24,12 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+  config:
+    activate:
+      on-profile: dev
+    import: optional:file:.env.${spring.profiles.active}[.properties]
+
 jwt:
-  secret-key: <secret-key>
+  secret-key: local-admin-authenticate-secret-key
   expiration-minutes: 1200
   refresh-expiration-minutes: 10080

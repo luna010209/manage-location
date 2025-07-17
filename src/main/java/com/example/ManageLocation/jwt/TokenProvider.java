@@ -1,7 +1,9 @@
 package com.example.ManageLocation.jwt;
 
+import com.example.ManageLocation.exception.CustomException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -85,5 +87,18 @@ public class TokenProvider {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+    }
+
+    public boolean tokenValidate(String token){
+        try {
+            Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+            return true;
+        } catch (Exception e){
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "Invalid Token");
+        }
     }
 }
