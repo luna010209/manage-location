@@ -14,7 +14,7 @@ public class CustomUserDetails implements UserDetails {
     private final UserEntity user;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(UserEntity user ) {
+    public CustomUserDetails(UserEntity user) {
         this.user = user;
         this.authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
@@ -35,6 +35,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getPassword();
+        return user.getEmail();
     }
 }

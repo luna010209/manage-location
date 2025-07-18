@@ -16,6 +16,7 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -32,6 +33,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService{
     private final UserRepo userRepo;
     private final PasswordEncoder encoder;
@@ -68,8 +70,9 @@ public class UserServiceImpl implements UserService{
     public LoginResponse authenticate(LoginRequest request, String ipAddress, String userAgent) {
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.emailOrPhone(), request.password());
-
+            log.info("Authentication token: {}", authenticationToken.getPrincipal());
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            log.info("Name: {}", authentication.getName());
 
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 

@@ -40,7 +40,6 @@ public class UserController {
 
         // Obtain ip of client
         String ipAddress = getClientIp(httpServletRequest);
-        log.info("Ip: {}", ipAddress);
 
         LoginResponse loginResponse = userService.authenticate(request, ipAddress, userAgent);
         response.setHeader("Authorization", "Bearer "+ loginResponse.accessToken());

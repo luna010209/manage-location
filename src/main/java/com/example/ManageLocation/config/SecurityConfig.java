@@ -15,8 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
@@ -32,7 +30,7 @@ public class SecurityConfig {
 //                        .requestMatchers("").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(exceptHandle -> exceptHandle
+                .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(jwtEntryPoint)
                 )
                 .addFilterBefore(

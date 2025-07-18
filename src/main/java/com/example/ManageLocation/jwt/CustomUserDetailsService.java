@@ -4,6 +4,7 @@ import com.example.ManageLocation.entity.auth.UserEntity;
 import com.example.ManageLocation.exception.CustomException;
 import com.example.ManageLocation.repo.auth.UserRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepo userRepo;
@@ -25,6 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String phoneOrMail) throws UsernameNotFoundException {
         UserEntity user;
+        log.info(phoneOrMail);
         if (userRepo.existsByEmail(phoneOrMail))
             user = userRepo.findByEmail(phoneOrMail).orElseThrow();
         else if (userRepo.existsByPhone(phoneOrMail))

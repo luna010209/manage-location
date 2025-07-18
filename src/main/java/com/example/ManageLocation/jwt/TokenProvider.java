@@ -3,6 +3,7 @@ package com.example.ManageLocation.jwt;
 import com.example.ManageLocation.exception.CustomException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 import static com.example.ManageLocation.jwt.TokenUtils.AUTHORITIES_KEY;
 
 @Component
+@Slf4j
 public class TokenProvider {
     private final SecretKey key;
     private final CustomUserDetailsService userDetailsService;
@@ -58,7 +60,6 @@ public class TokenProvider {
         SecretKey signingKey = TokenUtils.generateSigningKey(jwtProperties.secretKey());
         Instant issuedAt = Instant.now();
         Date expirationDate = Date.from(issuedAt.plus(jwtProperties.refreshExpirationMinutes(), ChronoUnit.MINUTES));
-
 
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
