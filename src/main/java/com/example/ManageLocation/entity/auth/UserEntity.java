@@ -1,5 +1,6 @@
 package com.example.ManageLocation.entity.auth;
 
+import com.example.ManageLocation.entity.address.Address;
 import com.example.ManageLocation.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,9 @@ public class UserEntity {
 
     @Setter
     private LocalDateTime lastLogin;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Address address;
 
     @Column(name = "role")
     @Builder.Default
