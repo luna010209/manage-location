@@ -4,12 +4,15 @@ import com.example.ManageLocation.dto.auth.LoginRequest;
 import com.example.ManageLocation.dto.auth.LoginResponse;
 import com.example.ManageLocation.dto.auth.SignUpRequest;
 import com.example.ManageLocation.dto.auth.UserInfo;
+import com.example.ManageLocation.entity.address.Address;
 import com.example.ManageLocation.entity.auth.HistoryLogin;
 import com.example.ManageLocation.entity.auth.UserEntity;
+import com.example.ManageLocation.enums.AddressTarget;
 import com.example.ManageLocation.exception.CustomException;
 import com.example.ManageLocation.jwt.CustomUserDetails;
 import com.example.ManageLocation.jwt.JwtProperties;
 import com.example.ManageLocation.jwt.TokenProvider;
+import com.example.ManageLocation.repo.address.AddressRepo;
 import com.example.ManageLocation.repo.auth.HistoryLoginRepo;
 import com.example.ManageLocation.repo.auth.UserRepo;
 import io.micrometer.common.util.StringUtils;
@@ -27,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -34,6 +38,7 @@ import java.util.Set;
 @Slf4j
 public class UserServiceImpl implements UserService{
     private final UserRepo userRepo;
+    private final AddressRepo addressRepo;
     private final PasswordEncoder encoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -102,7 +107,9 @@ public class UserServiceImpl implements UserService{
             user = userRepo.findByPhone(emailOrPhone).orElseThrow();
         }
         if (user == null) throw new CustomException(HttpStatus.BAD_REQUEST, "No user login");
-        return UserInfo.from(user);
+        List<Address> addresses = addressRepo.findByAddressTargetAndTargetId(AddressTarget.USER, user.getId());
+        return UserInfo.from(user, addresses);
     }
+
 
 }

@@ -2,6 +2,7 @@ package com.example.ManageLocation.entity.address;
 
 import com.example.ManageLocation.config.jpa.CommonAuditFields;
 import com.example.ManageLocation.entity.auth.UserEntity;
+import com.example.ManageLocation.enums.AddressTarget;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,4 +32,7 @@ public class Address extends CommonAuditFields {
     private String altAddress;
     private double latitude;
     private double longitude;
+
+    private AddressTarget addressTarget;
+    private Long targetId;
 }

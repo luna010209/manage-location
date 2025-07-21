@@ -4,9 +4,11 @@ import com.example.ManageLocation.entity.address.Address;
 import com.example.ManageLocation.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,8 +32,10 @@ public class UserEntity {
     @Setter
     private LocalDateTime lastLogin;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Address address;
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "targetId")
+//    @Where(clause = "address_target = 'USER'")
+//    private List<Address> addresses;
 
     @Column(name = "role")
     @Builder.Default
