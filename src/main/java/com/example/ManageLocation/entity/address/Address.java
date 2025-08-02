@@ -33,6 +33,9 @@ public class Address extends CommonAuditFields {
     private double latitude;
     private double longitude;
 
-    private AddressTarget addressTarget;
-    private Long targetId;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UserEntity user;
+
+//    private AddressTarget addressTarget;
+//    private Long targetId;
 }

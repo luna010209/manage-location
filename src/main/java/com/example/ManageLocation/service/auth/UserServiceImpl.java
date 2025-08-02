@@ -107,8 +107,8 @@ public class UserServiceImpl implements UserService{
             user = userRepo.findByPhone(emailOrPhone).orElseThrow();
         }
         if (user == null) throw new CustomException(HttpStatus.BAD_REQUEST, "No user login");
-        List<Address> addresses = addressRepo.findByAddressTargetAndTargetId(AddressTarget.USER, user.getId());
-        return UserInfo.from(user, addresses);
+//        List<Address> addresses = addressRepo.findByAddressTargetAndTargetId(AddressTarget.USER, user.getId());
+        return UserInfo.from(user);
     }
 
 

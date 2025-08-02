@@ -32,10 +32,8 @@ public class UserEntity {
     @Setter
     private LocalDateTime lastLogin;
 
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "targetId")
-//    @Where(clause = "address_target = 'USER'")
-//    private List<Address> addresses;
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Address address;
 
     @Column(name = "role")
     @Builder.Default
