@@ -2,6 +2,7 @@ package com.example.ManageLocation.entity.address;
 
 import com.example.ManageLocation.config.jpa.CommonAuditFields;
 import com.example.ManageLocation.dto.address.AddressDTO;
+import com.example.ManageLocation.entity.area.Area;
 import com.example.ManageLocation.entity.auth.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,9 @@ public class Address extends CommonAuditFields {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserEntity user;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Area area;
 
     public void updateAddress(AddressDTO dto){
         this.country = dto.country();
