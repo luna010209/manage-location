@@ -4,10 +4,7 @@ import com.example.ManageLocation.dto.address.AddressDTO;
 import com.example.ManageLocation.service.address.AddressServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,5 +16,14 @@ public class AddressController {
     public ResponseEntity<Long> newAddress(@RequestBody AddressDTO addressDTO){
         Long addressId = addressService.createAddress(addressDTO);
         return ResponseEntity.ok(addressId);
+    }
+
+    @PutMapping("{addressId}")
+    public ResponseEntity<Void> updateAddress(
+            @PathVariable("addressId") Long addressId,
+            @RequestBody AddressDTO addressDTO
+    ){
+        addressService.updateAddress(addressId, addressDTO);
+        return ResponseEntity.ok().build();
     }
 }
