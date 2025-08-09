@@ -1,5 +1,9 @@
 package com.example.ManageLocation.service.area;
 
+import com.example.ManageLocation.currentUser.CurrentUser;
+import com.example.ManageLocation.dto.area.AreaRequest;
+import com.example.ManageLocation.entity.area.Area;
+import com.example.ManageLocation.entity.auth.UserEntity;
 import com.example.ManageLocation.exception.CustomException;
 import com.example.ManageLocation.repo.area.AreaRepo;
 import lombok.RequiredArgsConstructor;
@@ -9,14 +13,16 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AreaServiceImpl {
+public class AreaServiceImpl implements AreaService {
     private final AreaRepo areaRepo;
+    private final CurrentUser currentUser;
 
     private final GeometryFactory geometryFactory = new GeometryFactory();
 
@@ -38,5 +44,21 @@ public class AreaServiceImpl {
 
         LinearRing ring = geometryFactory.createLinearRing(coordinateList.toArray(new Coordinate[0]));
         return geometryFactory.createPolygon(ring);
+    }
+
+    @Override
+    @Transactional
+    public Long createArea(AreaRequest areaRequest) {
+        Polygon polygon = convertToPolygon(areaRequest.coordinates());
+        UserEntity user = currentUser.currentUser();
+        if (!user.getRoles().contains("ROLE_ADMIN"))
+            throw new CustomException(HttpStatus.BAD_REQUEST, "You don't have permission to create area");
+        Area area = Area.builder()
+                .name(areaRequest.name())
+                .polygon(polygon)
+                .user(user)
+                .build();
+        Area savedArea = areaRepo.save(area);
+        return savedArea.getId();
     }
 }
