@@ -4,6 +4,7 @@ import com.example.ManageLocation.currentUser.CurrentUser;
 import com.example.ManageLocation.dto.area.AreaRequest;
 import com.example.ManageLocation.entity.area.Area;
 import com.example.ManageLocation.entity.auth.UserEntity;
+import com.example.ManageLocation.enums.Role;
 import com.example.ManageLocation.exception.CustomException;
 import com.example.ManageLocation.repo.area.AreaRepo;
 import lombok.RequiredArgsConstructor;
@@ -46,12 +47,13 @@ public class AreaServiceImpl implements AreaService {
         return geometryFactory.createPolygon(ring);
     }
 
+    // Create new area
     @Override
     @Transactional
     public Long createArea(AreaRequest areaRequest) {
         Polygon polygon = convertToPolygon(areaRequest.coordinates());
         UserEntity user = currentUser.currentUser();
-        if (!user.getRoles().contains("ROLE_ADMIN"))
+        if (!user.getRoles().contains(Role.ROLE_ADMIN))
             throw new CustomException(HttpStatus.BAD_REQUEST, "You don't have permission to create area");
         Area area = Area.builder()
                 .name(areaRequest.name())
@@ -62,6 +64,7 @@ public class AreaServiceImpl implements AreaService {
         return savedArea.getId();
     }
 
+    // Get area to update
     private Area getArea(Long id){
         Area area = areaRepo.findById(id).orElseThrow(
                 ()-> new CustomException(HttpStatus.NOT_FOUND, "No exist area")
@@ -76,5 +79,13 @@ public class AreaServiceImpl implements AreaService {
     public void updateAreaName(AreaRequest areaRequest, Long id) {
         Area area = getArea(id);
         area.setName(areaRequest.name());
+    }
+
+    @Override
+    @Transactional
+    public void updatePolygon(AreaRequest areaRequest, Long id) {
+        Area area = getArea(id);
+        Polygon newPolygon = convertToPolygon(areaRequest.coordinates());
+        area.setPolygon(newPolygon);
     }
 }

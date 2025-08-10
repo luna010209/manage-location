@@ -6,4 +6,6 @@ public interface AreaService {
     Long createArea(AreaRequest areaRequest);
 
     void updateAreaName(AreaRequest areaRequest, Long id);
+
+    void updatePolygon(AreaRequest areaRequest, Long id);
 }
