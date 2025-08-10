@@ -54,7 +54,7 @@ public class AreaServiceImpl implements AreaService {
         Polygon polygon = convertToPolygon(areaRequest.coordinates());
         UserEntity user = currentUser.currentUser();
         if (!user.getRoles().contains(Role.ROLE_ADMIN))
-            throw new CustomException(HttpStatus.BAD_REQUEST, "You don't have permission to create area");
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "You don't have permission to create area");
         Area area = Area.builder()
                 .name(areaRequest.name())
                 .polygon(polygon)

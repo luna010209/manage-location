@@ -73,9 +73,8 @@ public class UserServiceImpl implements UserService{
     public LoginResponse authenticate(LoginRequest request, String ipAddress, String userAgent) {
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.emailOrPhone(), request.password());
-            log.info("Authentication token: {}", authenticationToken.getPrincipal());
+
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-            log.info("Name: {}", authentication.getName());
 
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -93,7 +92,7 @@ public class UserServiceImpl implements UserService{
 
             return new LoginResponse(accessToken, refreshToken);
         } catch (AuthenticationException e){
-            throw new CustomException(HttpStatus.UNAUTHORIZED, "Fail to login");
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "Please check your username or password!");
         }
     }
 

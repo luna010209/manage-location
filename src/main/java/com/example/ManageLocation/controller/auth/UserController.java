@@ -26,6 +26,7 @@ public class UserController {
     private final UserService userService;
     @PostMapping("register")
     public ResponseEntity<Long> signUp(@Valid @RequestBody SignUpRequest request){
+
         Long userId = userService.newUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(userId);
     }
