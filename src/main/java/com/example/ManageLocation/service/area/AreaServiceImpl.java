@@ -61,4 +61,20 @@ public class AreaServiceImpl implements AreaService {
         Area savedArea = areaRepo.save(area);
         return savedArea.getId();
     }
+
+    private Area getArea(Long id){
+        Area area = areaRepo.findById(id).orElseThrow(
+                ()-> new CustomException(HttpStatus.NOT_FOUND, "No exist area")
+        );
+        if (!area.getUser().equals(currentUser.currentUser()))
+            throw new CustomException(HttpStatus.BAD_REQUEST, "You do not have authority to update area information");
+        return area;
+    }
+
+    @Override
+    @Transactional
+    public void updateAreaName(AreaRequest areaRequest, Long id) {
+        Area area = getArea(id);
+        area.setName(areaRequest.name());
+    }
 }

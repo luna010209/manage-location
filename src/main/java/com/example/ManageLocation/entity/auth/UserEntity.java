@@ -17,6 +17,7 @@ import java.util.Set;
 @Table(name = "luna_user_account")
 @AllArgsConstructor
 @Builder
+@ToString
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
