@@ -8,4 +8,6 @@ public interface AreaService {
     void updateAreaName(AreaRequest areaRequest, Long id);
 
     void updatePolygon(AreaRequest areaRequest, Long id);
+
+    void updateAddress(AreaRequest areaRequest, Long id);
 }

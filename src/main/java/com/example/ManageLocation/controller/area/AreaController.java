@@ -38,4 +38,14 @@ public class AreaController {
         areaService.updatePolygon(areaRequest, areaId);
         return ResponseEntity.ok().build();
     }
+
+    @ManagedOperation(description = "Add address into area")
+    @PutMapping("address/{areaId}")
+    public ResponseEntity<Void> addAddressArea(
+            @PathVariable("areaId") Long areaId,
+            @RequestBody AreaRequest areaRequest
+    ){
+        areaService.updateAddress(areaRequest, areaId);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -1,11 +1,14 @@
 package com.example.ManageLocation.service.area;
 
 import com.example.ManageLocation.currentUser.CurrentUser;
+import com.example.ManageLocation.dto.address.AddressDTO;
 import com.example.ManageLocation.dto.area.AreaRequest;
+import com.example.ManageLocation.entity.address.Address;
 import com.example.ManageLocation.entity.area.Area;
 import com.example.ManageLocation.entity.auth.UserEntity;
 import com.example.ManageLocation.enums.Role;
 import com.example.ManageLocation.exception.CustomException;
+import com.example.ManageLocation.repo.address.AddressRepo;
 import com.example.ManageLocation.repo.area.AreaRepo;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Coordinate;
@@ -24,6 +27,7 @@ import java.util.List;
 public class AreaServiceImpl implements AreaService {
     private final AreaRepo areaRepo;
     private final CurrentUser currentUser;
+    private final AddressRepo addressRepo;
 
     private final GeometryFactory geometryFactory = new GeometryFactory();
 
@@ -87,5 +91,15 @@ public class AreaServiceImpl implements AreaService {
         Area area = getArea(id);
         Polygon newPolygon = convertToPolygon(areaRequest.coordinates());
         area.setPolygon(newPolygon);
+    }
+
+    @Override
+    @Transactional
+    public void updateAddress(AreaRequest areaRequest, Long id) {
+        Area area = getArea(id);
+        Address address = addressRepo.findById(areaRequest.addressId()).orElseThrow(
+                ()-> new CustomException(HttpStatus.NOT_FOUND, "No exist address")
+        );
+        area.getAddresses().add(address);
     }
 }
