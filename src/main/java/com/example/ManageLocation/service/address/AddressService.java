@@ -6,4 +6,6 @@ public interface AddressService {
     Long createAddress(AddressDTO addressDTO);
 
     void updateAddress(Long id, AddressDTO addressDTO);
+
+    void deleteAddress(Long id);
 }

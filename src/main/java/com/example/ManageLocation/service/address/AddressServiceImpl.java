@@ -54,15 +54,24 @@ public class AddressServiceImpl implements AddressService{
         return savedAddress.getId();
     }
 
-    @Override
-    @Transactional
-    public void updateAddress(Long id, AddressDTO addressDTO) {
+    private Address getAddress(Long id){
         Address address = addressRepo.findById(id).orElseThrow(
                 ()-> new CustomException(HttpStatus.BAD_REQUEST, "No exist address")
         );
-        UserEntity user = currentUser.currentUser();
-        if (!user.getAddress().getId().equals(id))
-            throw new CustomException(HttpStatus.BAD_REQUEST, "This address is not valid");
+        if (!address.getUser().equals(currentUser.currentUser()))
+            throw new CustomException(HttpStatus.BAD_REQUEST, "You do not have authority in this address");
+        return address;
+    }
+    @Override
+    @Transactional
+    public void updateAddress(Long id, AddressDTO addressDTO) {
+        Address address = getAddress(id);
         address.updateAddress(addressDTO);
+    }
+
+    @Override
+    public void deleteAddress(Long id) {
+        Address address = getAddress(id);
+        address.softDelete();
     }
 }

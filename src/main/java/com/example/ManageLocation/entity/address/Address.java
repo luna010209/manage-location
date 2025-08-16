@@ -51,4 +51,8 @@ public class Address extends CommonAuditFields {
         this.latitude = dto.latitude();
         this.longitude = dto.longitude();
     }
+
+    public void softDelete(){
+        this.isDeleted();
+    }
 }

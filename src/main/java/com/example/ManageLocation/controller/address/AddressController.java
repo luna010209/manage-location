@@ -13,7 +13,7 @@ public class AddressController {
     private final AddressServiceImpl addressService;
 
     @PostMapping
-    public ResponseEntity<Long> newAddress(@RequestBody AddressDTO addressDTO){
+    public ResponseEntity<Long> newAddress(@RequestBody AddressDTO addressDTO) {
         Long addressId = addressService.createAddress(addressDTO);
         return ResponseEntity.ok(addressId);
     }
@@ -22,8 +22,14 @@ public class AddressController {
     public ResponseEntity<Void> updateAddress(
             @PathVariable("addressId") Long addressId,
             @RequestBody AddressDTO addressDTO
-    ){
+    ) {
         addressService.updateAddress(addressId, addressDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("{addressId}")
+    public ResponseEntity<Void> deleteAddress(@PathVariable("addressId") Long addressId) {
+        addressService.deleteAddress(addressId);
         return ResponseEntity.ok().build();
     }
 }
