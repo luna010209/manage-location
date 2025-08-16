@@ -5,10 +5,7 @@ import com.example.ManageLocation.dto.address.AddressDTO;
 import com.example.ManageLocation.entity.area.Area;
 import com.example.ManageLocation.entity.auth.UserEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -38,6 +35,7 @@ public class Address extends CommonAuditFields {
     private UserEntity user;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Setter
     private Area area;
 
     public void updateAddress(AddressDTO dto){
