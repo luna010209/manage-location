@@ -1,5 +1,6 @@
 package com.example.ManageLocation.entity.area;
 
+import com.example.ManageLocation.config.jpa.CommonAuditFields;
 import com.example.ManageLocation.entity.address.Address;
 import com.example.ManageLocation.entity.auth.UserEntity;
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ import java.util.List;
 @ToString
 @Builder
 @Table(name = "luna_area")
-public class Area {
+public class Area extends CommonAuditFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,4 +33,8 @@ public class Area {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserEntity user;
+
+    public void softDelete(){
+        this.isDeleted();
+    }
 }

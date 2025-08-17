@@ -48,4 +48,11 @@ public class AreaController {
         areaService.updateAddress(areaRequest, areaId);
         return ResponseEntity.ok().build();
     }
+
+    @ManagedOperation(description = "Delete area")
+    @DeleteMapping("{areaId}")
+    public ResponseEntity<Void> deleteArea(@PathVariable("areaId") Long areaId){
+        areaService.deleteArea(areaId);
+        return ResponseEntity.ok().build();
+    }
 }

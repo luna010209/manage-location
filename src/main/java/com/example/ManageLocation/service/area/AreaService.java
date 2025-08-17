@@ -10,4 +10,7 @@ public interface AreaService {
     void updatePolygon(AreaRequest areaRequest, Long id);
 
     void updateAddress(AreaRequest areaRequest, Long id);
+
+    void deleteArea(Long id);
 }
+

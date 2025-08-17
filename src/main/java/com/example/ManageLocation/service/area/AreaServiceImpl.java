@@ -102,4 +102,10 @@ public class AreaServiceImpl implements AreaService {
         );
         area.getAddresses().add(address);
     }
+
+    @Override
+    public void deleteArea(Long id) {
+        Area area = getArea(id);
+        area.softDelete();
+    }
 }
