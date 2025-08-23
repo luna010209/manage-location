@@ -14,7 +14,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -36,6 +36,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    //Polygon for area
+    implementation("org.hibernate.orm:hibernate-spatial:6.2.9.Final")
 
 	implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
 	runtimeOnly "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
